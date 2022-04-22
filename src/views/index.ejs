@@ -1,0 +1,33 @@
+<%- include('includes/head'); %> <%- include('includes/nav'); %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 my-5">
+      <%- include('includes/messages'); %>
+      <h1 class="text-center">Agenda</h1>
+      <% if (user) { %>
+      <p class="text-center lead">
+        Bem vindo <%= String(user[0].email).split('@')[0] %>
+      </p>
+      <% } %>
+      <p class="text-center lead">Seus contatos estão abaixo</p>
+      <% if(contact.length> 0 && user) { %>
+      <div class="responsive-table">
+        <table class="table my-3">
+          <% if (idUser=idContact) { %> <% contact.forEach(contato=> { %>
+          <tr>
+            <td><%= contato.firstname %></td>
+            <td><%= contato.surname %></td>
+            <td><%= contato.tel %></td>
+            <td><%= contato.email %></td>
+          </tr>
+          <% }) %> <% } %> <% } %>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<%- include('includes/footer'); %>

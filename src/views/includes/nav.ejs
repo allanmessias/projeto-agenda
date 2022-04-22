@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <% if (user) { %>
+  <a class="navbar-brand" style="padding: 10px" href="/user/<%= String(user[0].email).split('@')[0] %>">Home</a>
+  <% } %>
+  <% if (user===undefined) { %>
+    <a class="navbar-brand" style="padding: 10px" href="/">Home</a>
+    <% } %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav" style="margin-left: auto">
+      <!-- If user not exists, shows Register option on navbar -->
+      <% if (user) { %>
+  
+        <li class="nav-item">
+          <a class="btn btn-primary fw-bold px-5 m-2" href="/user/<%= String(user[0].email).split('@')[0] %>/contato/index">Cadastrar Contato</a>
+          </button>
+        </li>
+        <li class="nav-item">
+
+          <a class="btn btn-primary fw-bold px-5 m-2" href="./login/logout">Sair</a>
+          </button>
+        </li>
+
+        <% } %>
+
+          <!-- ------------------------------------------------ -->
+          <% if (user===undefined) { %>
+            <li class="nav-item">
+              <a class="btn btn-primary fw-bold px-5 m-2" href="./login/index">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary fw-bold px-5 m-2" href="./register/index">Registre-se</a>
+            </li>
+
+            <% } %>
+
+    </ul>
+  </div>
+</nav>
