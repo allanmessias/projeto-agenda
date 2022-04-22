@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 
     if (contato.errors.length > 0) {
       req.flash('errors', contato.errors);
-      res.redirect('/user/:id/contato/index');
+      res.redirect(`/user/${req.user._id}/contato/index`);
       return;
     }
 
@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
     await LoginModel.find().populate('createdBy');
 
     req.session.contact = contato.contact;
-    req.session.save(() => res.redirect('/user/:id/contato/index'));
+    req.session.save(() => res.redirect(`/user/${req.user._id}/contato/index`));
     return;
   } catch (e) {
     console.log(e);
