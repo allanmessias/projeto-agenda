@@ -39,4 +39,5 @@ O projeto foi desenvolvido em Javascript, utilizando o NodeJS para back-end, EJS
 
 - Editar contatos
 - Apagar contatos
+- Validar frontend
 
