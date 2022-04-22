@@ -5,8 +5,10 @@
 exports.index = async (req, res) => {
   try {
     const contacts = await res.locals.contact;
-    const render = await res.render('index', { contacts });
-    return render;
+    const render = setTimeout(() => {
+      res.render('index', { contacts });
+      return render;
+    }, 2000);
   } catch (e) {
     console.log(e);
   }
