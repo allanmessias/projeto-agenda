@@ -1,50 +1,78 @@
-<%- include('includes/head'); %>
-  <%- include('includes/nav'); %>
+<%- include('includes/head'); %> <%- include('includes/nav'); %>
 
-    <div class="container">
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 my-5">
+      <h1 class="text-center">Cadastre seu contato</h1>
+      <p class="text-center lead text-muted">Até aquele contatinho...rs</p> 
+
+      <%- include('includes/messages'); %>
+
       <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8 my-5">
-          <h1 class="text-center">Cadastre seu contato</h1>
-          <p class="text-center lead text-muted">Até aquele contatinho...rs</p>
-
-          <%- include('includes/messages'); %>
-
-            <div class="row">
-              <div class="col-lg my-3"></div>
-
-              <form action="/contato/register" method="post">
-                <input type="hidden" name="createdBy" value="<% if (idUser !== undefined) { %>
+        <div class="col-lg my-3"></div>
+        <% if (idContact == undefined) { %>
+          <form action="/contato/register" method="post">
+        <% } else { %>
+          <form action="/contato/edit/<%= String(user[0].email).split('@')[0] %>/<%= idContact %>  " method="post">
+          <% } %> 
+          <input
+            type="hidden"
+            name="createdBy"
+            value="<% if (idUser !== undefined) { %>
            <%= idUser %> 
-          <% } %>" />
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                <div class="form-group my-2">
-                  <label for="exampleFName">Nome do seu contato</label>
-                  <input type="text" class="form-control" id="exampleFName" aria-describedby="nameHelp"
-                    placeholder="Digite o nome" name="firstname" />
-                </div>
-                <div class="form-group my-2">
-                  <label for="exampleSName">Sobrenome do seu contato</label>
-                  <input type="text" class="form-control" id="exampleSName" placeholder="Digite o sobrenome"
-                    name="surname" />
-                </div>
-                <div class="form-group my-2">
-                  <label for="exampleTelephone">Telefone do seu contato</label>
-                  <input type="text" class="form-control" id="exampleSName" placeholder="Digite o telefone"
-                    name="tel" />
-                </div>
-                <div class="form-group my-2">
-                  <label for="exampleInputEmail1">Email do seu contato</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Email do seu contato" name="email" />
-                </div>
-                <button type="submit" class="btn btn-primary my-2">
-                  Pode enviar!
-                </button>
-              </form>
+          <% } %>"
+          />
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="form-group my-2">
+            <label for="exampleFName">Nome do seu contato</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleFName"
+              aria-describedby="nameHelp"
+              placeholder="Digite o nome"
+              name="firstname"
+            />
+          </div>
+          <div class="form-group my-2">
+            <label for="exampleSName">Sobrenome do seu contato</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleSName"
+              placeholder="Digite o sobrenome"
+              name="surname"
+            />
+          </div>
+          <div class="form-group my-2">
+            <label for="exampleTelephone">Telefone do seu contato</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleSName"
+              placeholder="Digite o telefone"
+              name="tel"
+            />
+          </div>
+          <div class="form-group my-2">
+            <label for="exampleInputEmail1">Email do seu contato</label>
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Email do seu contato"
+              name="email"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary my-2">
+            Pode enviar!
+          </button>
+        </form>
 
-              <%- include('includes/footer'); %>
-            </div>
-        </div>
+        <%- include('includes/footer'); %>
       </div>
     </div>
+  </div>
+</div>

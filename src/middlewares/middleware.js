@@ -10,6 +10,7 @@ exports.middlewareGlobal = async (req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.user = req.user;
   res.locals.contact = await ContatoModel.find();
+  res.locals.idContact = undefined;
 
   // If user exists
   if (res.locals.user !== undefined) {
@@ -27,7 +28,8 @@ exports.middlewareGlobal = async (req, res, next) => {
       if (err) console.error(err);
       // Use contact's createdBy index to match user's and populate idContact property
       Object.keys(contact).forEach((key) => {
-        res.locals.idContact = contact[key].createdBy;
+        res.locals.idUserOnContact = contact[key].createdBy;
+        res.locals.idContact = contact[key]._id;
       });
     });
   }

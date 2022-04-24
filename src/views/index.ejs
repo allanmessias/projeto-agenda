@@ -15,7 +15,7 @@
       <% if(contact.length> 0 && user) { %>
       <div class="responsive-table">
         <table class="table my-3">
-          <% if (idUser=idContact) { %> <% contact.forEach(contato=> { %>
+          <% if (idUser=idUserOnContact) { %> <% contact.forEach(contato=> { %>
           <tr>
             <td><%= contato.firstname %></td>
             <td><%= contato.surname %></td>

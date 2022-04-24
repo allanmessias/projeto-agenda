@@ -1,4 +1,5 @@
 const express = require('express');
+const { ContatoModel } = require('../src/models/ContatoModel');
 
 const route = express.Router();
 const homeController = require('../src/controllers/homeController');
@@ -27,5 +28,7 @@ route.get('/user/:id/logout', loginController.logout);
 // Contact routes
 route.get('/user/:id/contato/index', contatoController.index);
 route.post('/contato/register', contatoController.register);
-
+route.post('/contato/edit/:emailuser/:idcontact', contatoController.edit, (req, res) => {
+  console.log('oi');
+});
 module.exports = route;

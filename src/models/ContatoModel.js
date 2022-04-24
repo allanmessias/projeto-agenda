@@ -14,7 +14,6 @@ const ContatoSchema = new mongoose.Schema({
     ref: 'Login',
   },
 });
-
 const ContatoModel = mongoose.model('Contato', ContatoSchema);
 
 class Contato {
@@ -57,5 +56,12 @@ class Contato {
     };
   }
 }
+
+Contato.prototype.edit = async function (id) {
+  if (typeof id !== 'string') return;
+  this.isValid();
+  if (this.errors.length > 0) return;
+  this.contact = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
+};
 
 module.exports = { Contato, ContatoModel };

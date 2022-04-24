@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+const { render } = require('ejs');
 const { Contato } = require('../models/ContatoModel');
 const { LoginModel } = require('../models/LoginModel');
 
@@ -13,7 +14,7 @@ exports.index = (req, res) => {
 };
 
 // Register contact using the request body and user id
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   try {
     const id = req.user._id;
     const contato = new Contato(req.body, id);
@@ -37,4 +38,32 @@ exports.register = async (req, res) => {
     console.log(e);
     res.render('404');
   }
+  next();
+};
+
+exports.edit = async (req, res, next) => {
+  try {
+    if (!req.params) return res.render('404');
+    const id = req.user._id;
+    const contato = new Contato(req.body, id);
+    await contato.edit(req.params.idcontact);
+
+    if (contato.errors.length > 0) {
+      req.flash('errors', contato.errors);
+      res.redirect(`/user/${req.user._id}/contato/index`);
+      return;
+    }
+
+    req.flash('success', 'Contato editado com sucesso');
+
+    // Lookup on LoginModel and populate createdBy index with logged in user's id
+    await LoginModel.find().populate('createdBy');
+
+    req.session.contact = contato.contact;
+    req.session.save(() => res.redirect(`/user/${req.user._id}/contato/index`));
+    return;
+  } catch (e) {
+    res.render('404');
+  }
+  next();
 };
