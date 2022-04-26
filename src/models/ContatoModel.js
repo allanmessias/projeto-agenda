@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
@@ -59,9 +60,21 @@ class Contato {
 
 Contato.prototype.edit = async function (id) {
   if (typeof id !== 'string') return;
-  this.isValid();
+  await this.isValid();
   if (this.errors.length > 0) return;
   this.contact = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
+};
+
+Contato.delete = async function (id) {
+  if (typeof id !== 'string') return;
+  const contato = await ContatoModel.findOneAndDelete({ _id: id });
+  return contato;
+};
+
+Contato.buscaPorId = async function (id) {
+  if (typeof id !== 'string') return;
+  const contato = await ContatoModel.findById(id);
+  return contato;
 };
 
 module.exports = { Contato, ContatoModel };

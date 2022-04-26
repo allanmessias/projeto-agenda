@@ -1,12 +1,14 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
-const { render } = require('ejs');
 const { Contato } = require('../models/ContatoModel');
 const { LoginModel } = require('../models/LoginModel');
 
 // Only shows if there's an user logged in
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
   if (res.locals.idUser !== undefined) {
-    res.render('contato');
+    await res.render('contato', {
+      contacts: {},
+    });
     return;
   }
   req.flash('errors', 'Você precisa estar logado para acessar essa página');
@@ -17,11 +19,11 @@ exports.index = (req, res) => {
 exports.register = async (req, res, next) => {
   try {
     const id = req.user._id;
-    const contato = new Contato(req.body, id);
-    await contato.createContact();
+    const contacts = new Contato(req.body, id);
+    await contacts.createContact();
 
-    if (contato.errors.length > 0) {
-      req.flash('errors', contato.errors);
+    if (contacts.errors.length > 0) {
+      req.flash('errors', contacts.errors);
       res.redirect(`/user/${req.user._id}/contato/index`);
       return;
     }
@@ -31,7 +33,7 @@ exports.register = async (req, res, next) => {
     // Lookup on LoginModel and populate createdBy index with logged in user's id
     await LoginModel.find().populate('createdBy');
 
-    req.session.contact = contato.contact;
+    req.session.contact = contacts.contact;
     req.session.save(() => res.redirect(`/user/${req.user._id}/contato/index`));
     return;
   } catch (e) {
@@ -41,15 +43,25 @@ exports.register = async (req, res, next) => {
   next();
 };
 
+exports.editIndex = async (req, res, next) => {
+  if (!req.params.id) { return res.render('404'); }
+
+  const contacts = await Contato.buscaPorId(req.params.id);
+  if (!contacts) { return res.render('404'); }
+
+  res.render('contato', { contacts });
+  next();
+};
+
 exports.edit = async (req, res, next) => {
   try {
     if (!req.params) return res.render('404');
     const id = req.user._id;
-    const contato = new Contato(req.body, id);
-    await contato.edit(req.params.idcontact);
+    const contacts = new Contato(req.body, id);
+    await contacts.edit(req.params.idcontact);
 
-    if (contato.errors.length > 0) {
-      req.flash('errors', contato.errors);
+    if (contacts.errors.length > 0) {
+      req.flash('errors', contacts.errors);
       res.redirect(`/user/${req.user._id}/contato/index`);
       return;
     }
@@ -59,9 +71,22 @@ exports.edit = async (req, res, next) => {
     // Lookup on LoginModel and populate createdBy index with logged in user's id
     await LoginModel.find().populate('createdBy');
 
-    req.session.contact = contato.contact;
+    req.session.contact = contacts.contact;
     req.session.save(() => res.redirect(`/user/${req.user._id}/contato/index`));
     return;
+  } catch (e) {
+    res.render('404');
+  }
+  next();
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    if (!req.params) return res.render('404');
+    const contacts = await Contato.delete(req.params.idcontact);
+    req.flash('success', 'contato deletado com sucesso');
+    req.session.save(() => res.redirect(`/user/${req.user._id}/contato/index`));
+    return contacts;
   } catch (e) {
     res.render('404');
   }

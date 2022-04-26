@@ -15,12 +15,25 @@
       <% if(contact.length> 0 && user) { %>
       <div class="responsive-table">
         <table class="table my-3">
-          <% if (idUser=idUserOnContact) { %> <% contact.forEach(contato=> { %>
+          <% if (idUser=idUserOnContact) { %> <% contact.forEach(contacts=> { %>
           <tr>
-            <td><%= contato.firstname %></td>
-            <td><%= contato.surname %></td>
-            <td><%= contato.tel %></td>
-            <td><%= contato.email %></td>
+            <td><%= contacts.firstname %></td>
+            <td><%= contacts.surname %></td>
+            <td><%= contacts.tel %></td>
+            <td><%= contacts.email %></td>
+            <td>
+              <a
+                href="/contato/index/<%= String(user[0].email).split('@')[0]%>/<%= contacts._id %>"
+                >Editar</a
+              >
+            </td>
+            <td>
+              <a
+                class="text-danger"
+                href="/contato/delete/<%= String(user[0].email).split('@')[0]%>/<%= contacts._id %>"
+                >Excluir</a
+              >
+            </td>
           </tr>
           <% }) %> <% } %> <% } %>
         </table>

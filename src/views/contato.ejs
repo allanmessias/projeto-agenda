@@ -4,17 +4,17 @@
   <div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8 my-5">
-      <h1 class="text-center">Cadastre seu contato</h1>
+      <h1 class="text-center">Cadastre ou edite o seu contato</h1>
       <p class="text-center lead text-muted">Até aquele contatinho...rs</p> 
 
       <%- include('includes/messages'); %>
 
       <div class="row">
         <div class="col-lg my-3"></div>
-        <% if (idContact == undefined) { %>
-          <form action="/contato/register" method="post">
-        <% } else { %>
-          <form action="/contato/edit/<%= String(user[0].email).split('@')[0] %>/<%= idContact %>  " method="post">
+        <% if (contacts._id) { %>
+          <form action="/contato/edit/<%= String(user[0].email).split('@')[0]%>/<%= contacts._id %>" method="post">
+            <% } else { %>
+             <form action="/contato/register" method="post">
           <% } %> 
           <input
             type="hidden"
